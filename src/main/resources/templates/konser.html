@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- ! xmlns:th="http://www.thymeleaf.org" is required for
+thymeleaf template engine -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,
+initial-scale=1.0" />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dis
+t/css/bootstrap.min.css" integrity="sha384-
+MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdkn
+LPMO" crossorigin="anonymous" />
+  <style>
+    .logout-link {
+      color: red !important; /* Important to override Bootstrap's default styles */
+    }
+  </style>
+  <!-- Bootstrap -->
+  <title>Event Konser</title>
+</head>
+
+<body class="container d-flex flex-column justify-content- center" style="min-height: 100vh">
+  <!-- <body> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+      <a class="navbar-brand" style="color: white;">Daftar Event</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/seminar/{id}(id=${idPenyelenggara})}">Seminar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/konser/{id}(id=${idPenyelenggara})}">Konser</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/lomba/{id}(id=${idPenyelenggara})}">Lomba</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link logout-link" th:href="@{/login/penyelenggara}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <h1 class="text-center">Daftar Event Konser</h1>
+
+    <div class="mt-2">
+      <div class="d-flex justify-content-end mb-2">
+        <a th:href="@{/event/add/{id}(id=${idPenyelenggara})}" class="btn btn-success mr-2">Buat Event</a>
+      </div>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nama</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Lokasi</th>
+            <th scope="col">Deskripsi</th>
+            <th scope="col">Biaya</th>
+            <th scope="col">Guest Star</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="eventkonser : ${eventkonser}">
+            <td th:text="${eventkonser.nama}"></td>
+            <td th:text="${eventkonser.tanggal}"></td>
+            <td th:text="${eventkonser.lokasi}"></td>
+            <td th:text="${eventkonser.deskripsi}"></td>
+            <td th:text="${eventkonser.biaya}"></td>
+            <td th:text="${eventkonser.gueststar}"></td>
+  
+            <td>
+              <a href="#" 
+                class="btn btn-primary"
+               >Detail</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Bootstrap -->
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-
+q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6
+jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dis
+t/umd/popper.min.js" integrity="sha384-
+ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPI
+Pm49" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist
+/js/bootstrap.min.js" integrity="sha384-
+ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwE
+ULTy" crossorigin="anonymous"></script>
+  <!-- Bootstrap -->
+</body>
+
+</html>
