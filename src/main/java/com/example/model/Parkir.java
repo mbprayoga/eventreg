@@ -6,6 +6,7 @@ public class Parkir {
     private int id;
     private double biaya;
     private String noParkir;
+    private int idTiket;
 
     // Getter and Setter Methods
     public int getId() {
@@ -30,5 +31,13 @@ public class Parkir {
 
     public void setNoParkir(String noParkir) {
         this.noParkir = noParkir;
+    }
+
+    public int getIdTiket() {
+        return idTiket;
+    }
+
+    public void setIdTiket(int idTiket) {
+        this.idTiket = idTiket;
     }
 }

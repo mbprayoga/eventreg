@@ -1,6 +1,16 @@
 package com.example.controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,8 +21,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.jdbc.core.RowMapper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.example.model.EventKonser;
 import com.example.model.EventSeminar;
+import com.example.model.Pengguna;
 import com.example.model.Penyelenggara;
 import com.example.model.EventLomba;
 
@@ -20,6 +39,89 @@ import com.example.model.EventLomba;
 public class EventController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private String formatDate(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) {
+            return "";
+        }
+        try {
+            // Parse as LocalDateTime first
+            LocalDateTime dateTime = LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            // Format as LocalDate (to remove time component) and then format as dd-MM-yyyy
+            return dateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        } catch (DateTimeParseException e) {
+            e.printStackTrace(); // Handle the parsing exception as needed
+            return ""; // Return empty string or handle error case
+        }
+    }
+
+    @GetMapping("/event/{idPengguna}")
+    public String eventIndex(@PathVariable Long idPengguna, Model model) {
+        String sql = "SELECT id, nama, tanggal, lokasi, deskripsi, biaya, idPenyelenggara, jenislomba, gueststar, pembicara, tema, event "
+                   + "FROM ("
+                   + "    SELECT id, nama, tanggal, lokasi, deskripsi, biaya, idPenyelenggara, jenislomba, NULL AS gueststar, NULL AS pembicara, NULL AS tema, 'lomba' AS event FROM eventlomba "
+                   + "    UNION ALL "
+                   + "    SELECT id, nama, tanggal, lokasi, deskripsi, biaya, idPenyelenggara, NULL AS jenislomba, gueststar, NULL AS pembicara, NULL AS tema, 'konser' AS event FROM eventkonser "
+                   + "    UNION ALL "
+                   + "    SELECT id, nama, tanggal, lokasi, deskripsi, biaya, idPenyelenggara, NULL AS jenislomba, NULL AS gueststar, pembicara, tema, 'seminar' AS event FROM eventseminar "
+                   + ") events "
+                   + "WHERE tanggal >= CURRENT_DATE "
+                   + "ORDER BY tanggal ASC";
+
+        List<Map<String, Object>> events = jdbcTemplate.query(sql, new RowMapper<Map<String, Object>>() {
+            @Override
+            public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Map<String, Object> event = new HashMap<>();
+                event.put("id", rs.getLong("id"));
+                event.put("nama", rs.getString("nama"));
+                event.put("tanggal", formatDate(rs.getString("tanggal")));
+                event.put("lokasi", rs.getString("lokasi"));
+                event.put("deskripsi", rs.getString("deskripsi"));
+                event.put("biaya", rs.getInt("biaya"));
+                event.put("idPenyelenggara", rs.getLong("idPenyelenggara"));
+                event.put("jenislomba", rs.getString("jenislomba"));
+                event.put("gueststar", rs.getString("gueststar"));
+                event.put("pembicara", rs.getString("pembicara"));
+                event.put("tema", rs.getString("tema"));
+                event.put("event", rs.getString("event"));
+                return event;
+            }
+        });
+
+        model.addAttribute("events", events);
+        model.addAttribute("idPenyelenggara", idPengguna);
+        return "event";
+    }
+
+    @GetMapping("/konser/detail/{idPengguna}/{idEvent}")
+    public String konserDetail(@PathVariable Long idPengguna, @PathVariable Long idEvent, Model model) {
+        String sql = "SELECT * FROM eventkonser WHERE id=?";
+        EventKonser eventkonser = jdbcTemplate.queryForObject(sql, new Object[]{idEvent}, BeanPropertyRowMapper.newInstance(EventKonser.class));
+        model.addAttribute("eventkonser", eventkonser);
+        model.addAttribute("idPengguna", idPengguna);
+        model.addAttribute("idEvent", idEvent);
+        return "konserDetail";
+    }
+
+    @GetMapping("/lomba/detail/{idPengguna}/{idEvent}")
+    public String lombaDetail(@PathVariable Long idPengguna, @PathVariable Long idEvent, Model model) {
+        String sql = "SELECT * FROM eventlomba WHERE id=?";
+        EventLomba eventlomba = jdbcTemplate.queryForObject(sql, new Object[]{idEvent}, BeanPropertyRowMapper.newInstance(EventLomba.class));
+        model.addAttribute("eventlomba", eventlomba);
+        model.addAttribute("idPengguna", idPengguna);
+        model.addAttribute("idEvent", idEvent);
+        return "lombaDetail";
+    }
+
+    @GetMapping("/seminar/detail/{idPengguna}/{idEvent}")
+    public String seminarDetail(@PathVariable Long idPengguna, @PathVariable Long idEvent, Model model) {
+        String sql = "SELECT * FROM eventseminar WHERE id=?";
+        EventSeminar eventseminar = jdbcTemplate.queryForObject(sql, new Object[]{idEvent}, BeanPropertyRowMapper.newInstance(EventSeminar.class));
+        model.addAttribute("eventseminar", eventseminar);
+        model.addAttribute("idPengguna", idPengguna);
+        model.addAttribute("idEvent", idEvent);
+        return "seminarDetail";
+    }
 
     @GetMapping("/konser/{idPenyelenggara}")
     public String konserIndex(@PathVariable Long idPenyelenggara, Model model) {

@@ -5,6 +5,7 @@ public class Asuransi {
     // Properties for the asuransi table
     private int id;
     private double biaya;
+    private int idTiket;
 
     // Getter and Setter Methods
     public int getId() {
@@ -21,5 +22,13 @@ public class Asuransi {
 
     public void setBiaya(double biaya) {
         this.biaya = biaya;
+    }
+
+    public int getIdTiket() {
+        return idTiket;
+    }
+
+    public void setIdTiket(int idTiket) {
+        this.idTiket = idTiket;
     }
 }

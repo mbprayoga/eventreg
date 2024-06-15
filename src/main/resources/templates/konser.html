@@ -19,13 +19,13 @@ LPMO" crossorigin="anonymous" />
     }
   </style>
   <!-- Bootstrap -->
-  <title>Event Konser</title>
+  <title>Event Seminar</title>
 </head>
 
 <body class="container d-flex flex-column justify-content- center" style="min-height: 100vh">
   <!-- <body> -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-      <a class="navbar-brand" style="color: white;">Daftar Event</a>
+      <a class="navbar-brand" style="color: white;">Event Registration</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -75,10 +75,11 @@ LPMO" crossorigin="anonymous" />
             <td th:text="${eventkonser.gueststar}"></td>
   
             <td>
-              <a href="#" 
-                class="btn btn-primary"
-               >Detail</a>
-            </td>
+              <a th:href="@{/konser/peserta/{idPenyelenggara}/{idEvent}(idPenyelenggara=${idPenyelenggara}, idEvent=${eventkonser.id})}" 
+                class="btn btn-primary">
+                Detail
+              </a>
+           </td>
           </tr>
         </tbody>
       </table>

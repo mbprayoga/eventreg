@@ -26,6 +26,9 @@
         <button type="submit" class="btn btn-primary btn-block">Login</button>
         <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
       </form>
+      <p class="text-center">
+        Halaman Login Pengguna <a th:href="@{/login/pengguna}">Klik Disini</a>
+      </p>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

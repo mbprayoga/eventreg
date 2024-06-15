@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tiket</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+        .container {
+            padding-top: 20px;
+        }
+        .event-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+        .event-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            padding: 1.25rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        .card-text {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .card-text strong {
+            font-weight: 500;
+        }
+        .card-text span {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .card-img-top {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .logout-link {
+            color: red !important; /* Important to override Bootstrap's default styles */
+          }
+    </style>
+</head>
+<body class="container d-flex flex-column justify-content- center" style="min-height: 100vh">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <a class="navbar-brand" style="color: white;">Event Registration</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/event/{id}(id=${idPengguna})}">Event</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/tiket/{id}(id=${idPengguna})}">Tiket</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link logout-link" th:href="@{/login/pengguna}">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container">
+        <h1 class="text-center mb-4">Tiket</h1>
+        <div class="row">
+            <!-- Iterate over each event -->
+            <div class="col-lg-4 col-md-6 col-sm-12" th:each="tiketMap : ${tiketMaps}">
+                <div class="card event-card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3" th:text="${tiketMap['event_nama']}"></h5>                        
+                        <p class="card-text"><strong>Penyelenggara:</strong><span th:text="${tiketMap['penyelenggara_nama']}"></span></p>                        
+                        <p class="card-text"><strong>Tanggal:</strong><span th:text="${tiketMap['tanggal']}"></span></p>
+                        <p class="card-text"><strong>Tipe:</strong><span th:text="${tiketMap['tiket_tipe'] == 'eventkonser' ? 'Konser' : (tiketMap['tiket_tipe'] == 'eventlomba' ? 'Lomba' : 'Seminar')}"></span></p>                                                
+                        <p class="card-text"> ID<span th:text="${tiketMap['tiket_id']}"></span></p>
+                        <p class="card-text"> Asuransi ID<span th:text="${tiketMap['asuransi']}"></span></p>
+                        <p class="card-text"><strong>Parkir:</strong><span th:text="${tiketMap['no_parkir']}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -60,7 +60,7 @@ public class PengunaController {
                 BeanPropertyRowMapper.newInstance(Pengguna.class)
             );
             model.addAttribute("pengguna", pengguna);
-            return "redirect:/pengguna";
+            return "redirect:/event/" + pengguna.getId();
         } catch (EmptyResultDataAccessException e) {
             model.addAttribute("error", "Invalid email or password.");
             return "loginPengguna"; // Stay on the login page and show error message

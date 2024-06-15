@@ -46,43 +46,24 @@ LPMO" crossorigin="anonymous" />
         </ul>
       </div>
     </nav>
-    
-    <h1 class="text-center">Daftar Event Lomba</h1>
 
     <div class="mt-2">
-      <div class="d-flex justify-content-end mb-2">
-        <a th:href="@{/event/add/{id}(id=${idPenyelenggara})}" class="btn btn-success mr-2">Buat Event</a>
-      </div>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Nama</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Lokasi</th>
-            <th scope="col">Deskripsi</th>
-            <th scope="col">Biaya</th>
-            <th scope="col">Jenis Lomba</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="eventlomba : ${eventlomba}">
-            <td th:text="${eventlomba.nama}"></td>
-            <td th:text="${eventlomba.tanggal}"></td>
-            <td th:text="${eventlomba.lokasi}"></td>
-            <td th:text="${eventlomba.deskripsi}"></td>
-            <td th:text="${eventlomba.biaya}"></td>
-            <td th:text="${eventlomba.jenislomba}"></td>
-  
-            <td>
-              <a th:href="@{/lomba/peserta/{idPenyelenggara}/{idEvent}(idPenyelenggara=${idPenyelenggara}, idEvent=${eventlomba.id})}" 
-                class="btn btn-primary">
-                Detail
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID Tiket</th>
+                    <th>Nama Peserta</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tiketMap : ${tiketMaps}">
+                    <td th:text="${tiketMap['tiket_id']}"></td>
+                    <td th:text="${tiketMap['pengguna_nama']}"></td>
+                    <td th:text="${tiketMap['pengguna_email']}"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <!-- Bootstrap -->
   

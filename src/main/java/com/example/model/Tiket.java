@@ -6,7 +6,7 @@ public class Tiket {
     private int id;
     private int idPengguna;
     private int idEvent;
-    private java.sql.Date tanggal;
+    private String tipe;
 
     // Getter and Setter Methods
     public int getId() {
@@ -33,11 +33,11 @@ public class Tiket {
         this.idEvent = idEvent;
     }
 
-    public java.sql.Date getTanggal() {
-        return tanggal;
+    public String getTipe() {
+        return tipe;
     }
 
-    public void setTanggal(java.sql.Date tanggal) {
-        this.tanggal = tanggal;
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 }
